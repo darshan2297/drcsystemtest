@@ -10,7 +10,11 @@
     <h1>Welcome To {{request.session.user.username|capfirst}}!</h1>
     <ul>
     {% for i in emails %}
-    <li>{{i.email}}</li>
+    <li>{{i.email}} | Is Primary: {% if i.is_primary_email %} Yes {% else %} No{% endif %}</li> 
+    <form method="post" action="{% url 'restapp:primary' i.id %}">
+        {% csrf_token %}
+        <button type="submit">Make Primary</button>
+    </form>
     {% endfor %}
     </ul>
 

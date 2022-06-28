@@ -89,4 +89,21 @@ class HomeView(View):
             EmailRecords.objects.create(user_id=userid,email=email)
             return redirect("restapp:home")
         else:
-           return HttpResponse("User not found")
+           return HttpResponse("Email not found")
+       
+
+class EmailPrimary(View):
+    
+    def post(self, request,pk,*args, **kwargs):
+        userid = request.session.get('user')['id']
+        EmailRecords.objects.filter(user_id=userid,is_deleted=False).update(is_primary_email=False)
+            
+        if getEmailObj := EmailRecords.objects.filter(id=pk,is_deleted=False).first():
+            getEmailObj.is_primary_email = True
+            getEmailObj.save()
+            return redirect("restapp:home")
+        else:
+           return HttpResponse("Email not found")
+        
+    
+    
