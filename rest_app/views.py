@@ -77,4 +77,16 @@ class HomeView(View):
     
     def get(self, request, *args, **kwargs):
         userData = request.session.get('user')['username']
-        return HttpResponse(f"Home Page {userData}")
+        emailRecords = EmailRecords.objects.filter(user_id=request.session.get('user')['id'],is_deleted=False)
+        return render(request,'home.html',{"emails":emailRecords})
+        
+    def post(self, request, *args, **kwargs):
+        email = request.POST['email']
+        userid = request.session.get('user')['id']
+        if getEmailObj := EmailRecords.objects.filter(user_id=userid,is_deleted=False).first():
+            if getEmailObj.email == email:
+               return HttpResponse("already exist email")
+            EmailRecords.objects.create(user_id=userid,email=email)
+            return redirect("restapp:home")
+        else:
+           return HttpResponse("User not found")
