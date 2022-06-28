@@ -10,7 +10,7 @@
     <h1 style="align-items: center;">Sign In</h1>
     <form method="post" action="{% url 'restapp:login' %}">
         {% csrf_token %}
-        <input type="email" name="email" placeholder="Enter Email" required>
+        <input type="text" name="number" placeholder="Enter Mobile Number" required>
         <button type="submit">Submit</button>
     </form>
 </body>

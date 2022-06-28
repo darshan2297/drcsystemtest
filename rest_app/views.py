@@ -39,11 +39,8 @@ class LoginView(View):
         return render(request,'Login.html')
     
     def post(self, request, *args, **kwargs):
-        email = request.POST['email']
-        if not (emailObj:= EmailRecords.objects.filter(email=email,is_deleted=False).first()):
-            return HttpResponse("User not found")
-        
-        if getUserObj:= UserProfile.objects.filter(id=emailObj.user_id,is_deleted=False).first():
+        mobile_number = request.POST['number']
+        if getUserObj:= UserProfile.objects.filter(mobile=mobile_number,is_deleted=False).first():
             otpObj = generateOTP()
             getUserObj.otp = otpObj["otp"]
             getUserObj.activation_key = otpObj["activation_key"]
